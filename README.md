@@ -80,7 +80,7 @@ The time complexity of this approach is \(O(n)\).
 
 #### Space Complexity
 
-The space complexity of this approach is \(O(n)\).
+The space complexity of this approach is \(O(1)\).
 
 ---
 
