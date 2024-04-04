@@ -1,0 +1,230 @@
+Q1: Merge two arrays by satisfying given constraints
+Given two sorted arrays X[] and Y[] of size m and n each where m >= n and X[] has exactly n vacant cells,
+ merge elements of Y[] in their correct position in array X[], i.e., merge (X, Y) by keeping the sorted order.
+
+For example,
+
+Input: X[] = { 0, 2, 0, 3, 0, 5, 6, 0, 0 }
+Y[] = { 1, 8, 9, 10, 15 } The vacant cells in X[] is represented by 0 
+Output: X[] = { 1, 2, 3, 5, 6, 8, 9, 10, 15 }
+
+Solution:- 
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+
+    private static void merge(int[] X, int[] Y, int m, int n) {
+        int k = m + n + 1;
+
+        while (m >= 0 && n >= 0) {
+            if (X[m] > Y[n]) {
+                X[k--] = X[m--];
+            } else {
+                X[k--] = Y[n--];
+            }
+        }
+
+        while (n >= 0) {
+            X[k--] = Y[n--];
+        }
+
+        Arrays.fill(Y, 0);
+    }
+
+    public static void rearrange(int[] X, int[] Y) {
+        if (X.length == 0) {
+            return;
+        }
+
+        int k = 0;
+        for (int value : X) {
+            if (value != 0) {
+                X[k++] = value;
+            }
+        }
+
+        merge(X, Y, k - 1, Y.length - 1);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the size of array X:");
+        int m = scanner.nextInt();
+        int[] X = new int[m];
+        System.out.println("Enter the elements of array X (including vacant cells):");
+        for (int i = 0; i < m; i++) {
+            X[i] = scanner.nextInt();
+        }
+
+        System.out.println("Enter the size of array Y:");
+        int n = scanner.nextInt();
+        int[] Y = new int[n];
+        System.out.println("Enter the elements of array Y:");
+        for (int i = 0; i < n; i++) {
+            Y[i] = scanner.nextInt();
+        }
+
+        rearrange(X, Y);
+
+        System.out.println("Merged array X: " + Arrays.toString(X));
+
+        scanner.close();
+    }
+}
+
+
+
+Q2:Find maximum sum path involving elements of given arrays
+Given two sorted arrays of integers, find a maximum sum path involving elements of both arrays whose sum is maximum. 
+We can start from either array, but we can switch between arrays only through its common elements.
+
+For example,
+
+Input: X = { 3, 6, 7, 8, 10, 12, 15, 18, 100 }
+Y = { 1, 2, 3, 5, 7, 9, 10, 11, 15, 16, 18, 25, 50 }  
+The maximum sum path is: 1 —> 2 —> 3 —> 6 —> 7 —> 9 —> 10 —> 12 —> 15 —> 16 —> 18 —> 100 
+The maximum sum is 199
+
+
+Solution:-
+import java.util.Scanner;
+
+public class MaximumSumPath {
+
+    int getMax(int a, int b) { 
+        return (a > b) ? a : b; 
+    } 
+
+    int findMaxSumPath(int array1[], int array2[], int size1, int size2) { 
+        int index1 = 0, index2 = 0; 
+        int totalSum = 0, sumArray1 = 0, sumArray2 = 0; 
+
+        while (index1 < size1 && index2 < size2) { 
+            if (array1[index1] < array2[index2]) {
+                sumArray1 += array1[index1++];
+            } else if (array1[index1] > array2[index2]) {
+                sumArray2 += array2[index2++];
+            } else { 
+                totalSum += getMax(sumArray1, sumArray2) + array1[index1];
+                sumArray1 = 0; 
+                sumArray2 = 0; 
+                index1++; 
+                index2++; 
+            } 
+        } 
+
+        while (index1 < size1) {
+            sumArray1 += array1[index1++];
+        }
+        
+        while (index2 < size2) {
+            sumArray2 += array2[index2++];
+        }
+
+        totalSum += getMax(sumArray1, sumArray2); 
+
+        return totalSum; 
+    } 
+
+    public static void main(String[] args) { 
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the size of array array1:");
+        int size1 = scanner.nextInt();
+        int array1[] = new int[size1];
+        System.out.println("Enter the elements of array array1:");
+        for (int i = 0; i < size1; i++) {
+            array1[i] = scanner.nextInt();
+        }
+
+        System.out.println("Enter the size of array array2:");
+        int size2 = scanner.nextInt();
+        int array2[] = new int[size2];
+        System.out.println("Enter the elements of array array2:");
+        for (int i = 0; i < size2; i++) {
+            array2[i] = scanner.nextInt();
+        }
+
+        MaximumSumPath sumPath = new MaximumSumPath(); 
+
+        System.out.println("Maximum sum path is: " + sumPath.findMaxSumPath(array1, array2, size1, size2)); 
+
+        scanner.close();
+    } 
+}
+
+
+Q3:Write a Java Program to count the number of words in a string using HashMap.
+
+Solution:	
+import java.util.Scanner;
+import java.util.HashMap;
+
+class CountWords {
+    public static void main(String[] args) {
+        Scanner scannerObj = new Scanner(System.in);
+        
+        System.out.println("Enter a string ");
+        String userInput = scannerObj.nextLine();
+
+        HashMap<String, Integer> wordCountMap = new HashMap<>();
+
+        String[] wordArray = userInput.split(" ");
+
+        for (String individualWord : wordArray) {
+            if (wordCountMap.containsKey(individualWord)) {
+                wordCountMap.put(individualWord, wordCountMap.get(individualWord) + 1);
+            } else {
+                wordCountMap.put(individualWord, 1);
+            }
+        }
+        
+        for (String word : wordArray) {
+            if (wordCountMap.containsKey(word)) {
+                System.out.println(word + ": " + wordCountMap.get(word));
+                wordCountMap.remove(word); 
+            }
+        }
+
+        scannerObj.close();
+    }
+}
+
+
+Q4:Write a Java Program to find the duplicate characters in a string.
+
+Solution:-
+import java.util.Scanner;
+
+public class DuplicateCharacter {
+    public static void DetectDuplicate(String userInput) {
+        int[] charCountArray = new int[256]; 
+
+        System.out.print("Duplicate Characters : ");
+        for (char ch : userInput.toCharArray()) {
+            charCountArray[ch]++;
+        }
+
+        for (int i = 0; i < 256; i++) {
+            if (charCountArray[i] > 1) {
+                System.out.print((char) i + " ");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scannerObj = new Scanner(System.in);
+        
+        System.out.println("Enter a string:");
+        String userString = scannerObj.nextLine();
+
+        DetectDuplicate(userString);
+
+        scannerObj.close();
+    }
+}
+
+
+
