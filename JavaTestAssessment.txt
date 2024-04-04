@@ -162,7 +162,7 @@ Solution:
 import java.util.Scanner;
 import java.util.HashMap;
 
-class CountWords {
+public class CountWords {
     public static void main(String[] args) {
         Scanner scannerObj = new Scanner(System.in);
         
@@ -181,16 +181,17 @@ class CountWords {
             }
         }
         
-        for (String word : wordArray) {
-            if (wordCountMap.containsKey(word)) {
-                System.out.println(word + ": " + wordCountMap.get(word));
-                wordCountMap.remove(word); 
-            }
+        int totalCount = 0;
+        for (int count : wordCountMap.values()) {
+            totalCount += count;
         }
+        
+        System.out.println("Total count: " + totalCount);
 
         scannerObj.close();
     }
 }
+
 
 
 Q4:Write a Java Program to find the duplicate characters in a string.
